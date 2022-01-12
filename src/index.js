@@ -17,9 +17,11 @@ function formatName(user) {
 
 function Logo(props) {
   return (
-    <img src={logo} className="App-logo" alt="logo"/>
+    <img src={props.logo} className="App-logo" alt="logo"/>
   );
 }
+
+//Todos os componentes React tem que agir como funções puras em relação aos seus props.
 
 function Avatar(props) {
   return (
@@ -54,7 +56,7 @@ class Clock extends React.Component {
     return(
       <div className="app">
         <header className="App-header">
-          <Logo/>
+          <Logo logo={logo}/>
           <Avatar user={user} date={this.state.date}/>
         </header>
       </div>
@@ -66,6 +68,7 @@ function App() {
   return (
     <div>
       <Clock/>
+      <Form/>
     </div>
   );
 }
@@ -75,7 +78,23 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-//Todos os componentes React tem que agir como funções puras em relação aos seus props.
+
+//another component
+
+function Form(props) {
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log('Você clicou em enviar');
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <button type="submit">Enviar</button>
+    </form>
+  );
+}
+
+
 
 // function component
 // function Welcome(props) {
