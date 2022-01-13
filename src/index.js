@@ -222,6 +222,21 @@ class Page extends React.Component {
   }
 }
 
+//renderizando multiplos componentes
+
+const numbers = [1,2,3,4,5,6];
+const listNumbers = numbers.map(number => <li key={number.toString()}>{number}</li>);
+
+//componente de lista básico
+function NumberList(props) {
+  const numbers = props.numbers
+  const listNumbers = numbers.map(number => <li key={number.toString()}>{number}</li>);
+
+  return (
+    <ul>{listNumbers}</ul>
+  );
+}
+
 function App() {
   return (
     <div>
@@ -231,6 +246,8 @@ function App() {
       <LoginControl/>
       <MailBox unreadMessages={messages} />
       <Page/>
+      <ul>{listNumbers}</ul>
+      <NumberList numbers={numbers} />
     </div>
   );
 }
