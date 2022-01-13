@@ -5,6 +5,7 @@ import './index.css';
 // import reportWebVitals from './reportWebVitals';
 import logo from './logo.svg';
 import './App.css';
+import { render } from '@testing-library/react';
 
 const user = {
   firstName: 'Zé',
@@ -64,11 +65,37 @@ class Clock extends React.Component {
   }
 }
 
+//other component
+
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {isToggleOn: true};
+    // this.handeClick = this.handeClick.bind(this);
+  }
+
+  // handeClick() {
+    // sintaxe experimental de campos de classe pública
+  handeClick = () => {
+    this.setState(prevState => ({isToggleOn: !prevState.isToggleOn}))
+  }
+
+  render() {
+    return (
+      // <button onClick={() => this.handleClick()}>
+      <button onClick={this.handeClick}>
+        {this.state.isToggleOn ? 'ON' : 'OFF'}
+      </button>
+    );
+  }
+}
+
 function App() {
   return (
     <div>
       <Clock/>
       <Form/>
+      <Toggle/>
     </div>
   );
 }
