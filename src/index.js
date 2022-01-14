@@ -325,6 +325,156 @@ function LetersList(props) {
 //   );
 // }
 
+//Componentes Controlados
+class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    //event bind
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  //event bind
+  handleSubmit = (event) => {
+    alert('Um nome foi enviado: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Nome:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Enviar"/>
+      </form>
+    );
+  }
+}
+
+//outro componente controlado (form usando textarea ao inves do input)
+class EssayForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state ={
+      value: 'Por favor, escreva uma dissertação sobre o seu elemento DOM favorito.'
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit = (event) => {
+    alert(`Sua dissertação foi enviada ${this.state.value}`);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Dissertação:
+          <textarea value={this.state.value} onChange={this.handleChange}/>
+        </label>
+        <input type="submit" value="Enviar"/>
+      </form>
+    );
+  }
+}
+
+class FlavorForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: 'coco'};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert(`Seu sabor favorito é: ${this.state.value}`);
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Escolha seu sabor favorito:
+          <select value={this.state.value} onChange={this.handleChange}>
+            <option value="laranja">Laranja</option>
+            <option value="limao">Limão</option>
+            <option value="coco">Coco</option>
+            <option value="manga">Manga</option>
+          </select>
+        </label>
+        <input type="submit" value="Enviar"/>
+      </form>
+    );
+  }
+}
+
+//manipulando multiplos inputs
+class Reservation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGoing: true,
+      numberOfGuests: 2
+    };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  render() {
+    return (
+      <form>
+        <label>
+          Is Going:
+          <input
+            name="isGoing"
+            type="checkbox"
+            checked={this.state.isGoing}
+            onChange={this.handleInputChange}
+          />
+        </label>
+        <br />
+        <label>
+          Number of Guests:
+          <input 
+            name="numberOfGuests"
+            type="number"
+            value={this.state.numberOfGuests}
+            onChange={this.handleInputChange}
+          />
+        </label>
+      </form>
+    );
+  }
+}
+
 function App() {
   return (
     <div>
@@ -339,6 +489,10 @@ function App() {
       <Blog posts={posts}/>
       <LetersList leters={leters} />
       {/* <NumberList2 numbers={numbers} /> */}
+      <NameForm />
+      <EssayForm />
+      <FlavorForm />
+      <Reservation />
     </div>
   );
 }
