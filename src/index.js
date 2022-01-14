@@ -227,6 +227,8 @@ class Page extends React.Component {
 const numbers = [1,2,3,4,5,6];
 const listNumbers = numbers.map(number => <li key={number.toString()}>{number}</li>);
 
+//por via de regra, os elementos dentro de uma função map() devem especificar chaves
+
 //componente de lista básico
 function NumberList(props) {
   const numbers = props.numbers
@@ -236,6 +238,92 @@ function NumberList(props) {
     <ul>{listNumbers}</ul>
   );
 }
+
+function Blog(props) {
+
+  const sidebar = (
+    <ul>
+      {props.posts.map((post) => 
+        <li key={post.id}>
+          {post.title}
+        </li>
+      )}
+    </ul>
+  );
+
+  const content = props.posts.map((post) =>
+    <div key={post.id}>
+      <h3>{post.title}</h3>
+      <p>{post.content}</p>
+    </div>
+  );
+
+  return (
+    <div>
+      {sidebar}
+      <hr/>
+      {content}
+    </div>
+  );
+}
+
+const posts = [
+  {id: 1, title: 'Hello World', content: 'Welcome to learning React!'},
+  {id: 2, title: 'Installation', content: 'You can install React from npm'},
+];
+
+const leters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','x','z'];
+
+function ListItem(props) {
+  return (
+    <li>
+      {props.value}
+    </li>
+  );
+}
+
+function LetersList(props) {
+  const leters = props.leters;
+
+  // const listItens = leters.map(leter =>
+  //   <ListItem key={leter.toString()} value={leter}/>
+  // );
+
+  // return (
+  //   <ul>
+  //     {listItens}
+  //   </ul>
+  // );
+
+  //incluindo map() no JSX
+  return(
+    <ul>
+      {
+        leters.map((leter) => 
+        <ListItem key={leter.toString()} value={leter}/>
+        )
+      }
+    </ul>
+  );
+}
+
+// function ListItem(props) {
+//   return <li>{props.value}</li>;
+// }
+
+// function NumberList2(props) {
+//   const numbers = props.numbers;
+//   const listItens = numbers.map((number) => 
+//     <ListItem key={number.toString()}
+//     value={number}/>
+//   );
+
+//   return (
+//     <ul>
+//       {listItens}
+//     </ul>
+//   );
+// }
 
 function App() {
   return (
@@ -248,6 +336,9 @@ function App() {
       <Page/>
       <ul>{listNumbers}</ul>
       <NumberList numbers={numbers} />
+      <Blog posts={posts}/>
+      <LetersList leters={leters} />
+      {/* <NumberList2 numbers={numbers} /> */}
     </div>
   );
 }
