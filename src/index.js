@@ -222,6 +222,21 @@ class Page extends React.Component {
   }
 }
 
+//another component
+
+function Form(props) {
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log('Você clicou em enviar');
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <button type="submit">Enviar</button>
+    </form>
+  );
+}
+
 //renderizando multiplos componentes
 
 const numbers = [1,2,3,4,5,6];
@@ -475,6 +490,109 @@ class Reservation extends React.Component {
   }
 }
 
+//Elevando o State
+
+function BoilingVerdict(props) {
+  if(props.celcius >= 100) {
+    return <p>A água ferveria</p>
+  }
+  return <p>A água não feveria</p>
+}
+
+const scaleNames = {
+  c: 'Celcius',
+  f: 'Fahrenheit'
+};
+
+function toCelcius(fahrenheit) {
+  return (fahrenheit - 32 * 5 / 9);
+}
+
+function ToFahrenheit(celcius) {
+  return (celcius * 9 / 5) + 32;
+}
+
+function tryConvert(temperature, convert) {
+  const input = parseFloat(temperature);
+  
+  if(Number.isNaN(input)) {
+    return ''
+  }
+
+  const output =  convert(input);
+  const rounded = Math.round(output * 1000) / 1000;
+  return rounded.toString();
+}
+
+class TemperatureInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    // this.state = {temperature: ''};
+  }
+
+  handleChange(e) {
+    // this.setState({temperature: e.target.value});
+    this.props.onTemperatureChange(e.target.value);
+  }
+
+  render() {
+    // const temperature = this.state.temperature;
+    const temperature = this.props.temperature;
+    const scale = this.props.scale;
+
+    return (
+      <fieldset>
+        <legend>Informe a temperatura em {scaleNames[scale]}:</legend>
+        <input 
+          value={temperature}
+          onChange={this.handleChange}
+        />
+      </fieldset>
+    );
+  }
+}
+
+class Calculator extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleCelciusChange = this.handleCelciusChange.bind(this);
+    this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+
+    this.state = {temperature: '', scale: 'c'};
+  }
+
+  handleCelciusChange(temperature) {
+    this.setState({scale: 'c', temperature});
+  }
+
+  handleFahrenheitChange(temperature) {
+    this.setState({scale: 'f', temperature});
+  }
+
+  render() {
+    const scale = this.state.scale;
+    const temperature =  this.state.temperature;
+    const celcius = scale === 'f' ? tryConvert(temperature, toCelcius) : temperature;
+    const fahrenheit = scale === 'c' ? tryConvert(temperature, ToFahrenheit) : temperature;
+
+    return (
+      <div>
+        <TemperatureInput 
+          temperature={'100'} 
+          scale="c" 
+          onTemperatureChange={this.handleCelciusChange} />
+        <TemperatureInput 
+          temperature={'70'} 
+          scale="f" 
+          onTemperatureChange={this.handleFahrenheitChange}/>
+        <BoilingVerdict celcius={parseFloat(celcius)} />
+      </div>
+    );
+  }
+}
+
 function App() {
   return (
     <div>
@@ -493,6 +611,7 @@ function App() {
       <EssayForm />
       <FlavorForm />
       <Reservation />
+      <Calculator />
     </div>
   );
 }
@@ -503,20 +622,7 @@ ReactDOM.render(
 );
 
 
-//another component
 
-function Form(props) {
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log('Você clicou em enviar');
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <button type="submit">Enviar</button>
-    </form>
-  );
-}
 
 
 
